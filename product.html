@@ -1,0 +1,2297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Rudra chemicals | Maintenance</title>
+<meta charset="utf-8">
+<link rel="stylesheet" href="css/reset.css" type="text/css" media="screen">
+<link rel="stylesheet" href="css/css.css" type="text/css" media="screen">
+
+<link rel="stylesheet" href="css/style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="css/grid.css" type="text/css" media="screen">
+<link rel="stylesheet" href="css/prettyPhoneoto.css" type="text/css" media="screen">
+<script src="js/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script src="js/cufon-yui.js" type="text/javascript"></script>
+<script src="js/cufon-replace.js" type="text/javascript"></script>
+<script src="js/Vegur_500.font.js" type="text/javascript"></script>
+<script src="js/FF-cash.js" type="text/javascript"></script>
+<script src="js/jquery.prettyPhoneoto.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(document).ready(function () {
+    $(".lightbox").append("<span></span>");
+    $("a[data-gal^='prettyVideo']").prettyPhoneoto({
+        animation_speed: 'normal',
+        theme: 'facebook',
+        slideshow: false,
+        autoplay_slideshow: false
+    });
+});
+</script>
+
+
+
+<style type="text/css" media="screen">@import url('css/stylemenu.css');</style>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+
+	<script type="text/javascript">
+		$(function() {
+			//We initially hide the all dropdown menus
+			$('#dropdown_nav li').find('.sub_nav').hide();
+
+			//When hovering over the main nav link we find the dropdown menu to the corresponding link.
+			$('#dropdown_nav li').hover(function() {
+				//Find a child of 'this' with a class of .sub_nav and make the beauty fadeIn.
+				$(this).find('.sub_nav').fadeIn(100);
+			}, function() {
+				//Do the same again, only fadeOut this time.
+				$(this).find('.sub_nav').fadeOut(50);
+			});
+		});
+	</script>
+<script type="text/javascript" src="js/jquery-1.3.2.js"></script>
+<script type="text/javascript" src="js/jquery.livequery.js"></script>
+<link href="css.css" rel="stylesheet" />
+<script type="text/javascript">
+$(document).ready(function() {
+	
+	var Arrays=new Array();
+	
+	$('.add-to-cart-button').click(function(){
+		
+		var thisID 	  = $(this).parent().parent().attr('id').replace('detail-','');
+		
+		var itemname  = $(this).parent().find('.item_name').html();
+		var itemprice = $(this).parent().find('.price').html();
+		
+		if(include(Arrays,thisID))
+		{
+			var price 	 = $('#each-'+thisID).children(".shopp-price").find('em').html();
+			var quantity = $('#each-'+thisID).children(".shopp-quantity").html();
+			quantity = parseInt(quantity)+parseInt(1);
+			
+			var total = parseInt(itemprice)*parseInt(quantity);
+			
+			$('#each-'+thisID).children(".shopp-price").find('em').html(total);
+			$('#each-'+thisID).children(".shopp-quantity").html(quantity);
+			
+			var prev_charges = $('.cart-total span').html();
+			prev_charges = parseInt(prev_charges)-parseInt(price);
+			
+			prev_charges = parseInt(prev_charges)+parseInt(total);
+			$('.cart-total span').html(prev_charges);
+			
+			$('#total-hidden-charges').val(prev_charges);
+		}
+		else
+		{
+			Arrays.push(thisID);
+			
+			var prev_charges = $('.cart-total span').html();
+			prev_charges = parseInt(prev_charges)+parseInt(itemprice);
+			
+			$('.cart-total span').html(prev_charges);
+			$('#total-hidden-charges').val(prev_charges);
+			
+			var Height = $('#cart_wrapper').height();
+			$('#cart_wrapper').css({height:Height+parseInt(45)});
+			
+			$('#cart_wrapper .cart-info').append('<div class="shopp" id="each-'+thisID+'"><div class="label">'+itemname+'</div><div class="shopp-price"> $<em>'+itemprice+'</em></div><span class="shopp-quantity">1</span><img src="remove.png" class="remove" /><br class="all" /></div>');
+			
+		}
+		
+	});	
+	
+	$('.remove').livequery('click', function() {
+		
+		var deduct = $(this).parent().children(".shopp-price").find('em').html();
+		var prev_charges = $('.cart-total span').html();
+		
+		var thisID = $(this).parent().attr('id').replace('each-','');
+		
+		var pos = getpos(Arrays,thisID);
+		Arrays.splice(pos,1,"0")
+		
+		prev_charges = parseInt(prev_charges)-parseInt(deduct);
+		$('.cart-total span').html(prev_charges);
+		$('#total-hidden-charges').val(prev_charges);
+		$(this).parent().remove();
+		
+	});	
+	
+	$('#Submit').livequery('click', function() {
+		
+		var totalCharge = $('#total-hidden-charges').val();
+		
+		$('#cart_wrapper').html('Total Charges: $'+totalCharge);
+		
+		return false;
+		
+	});	
+	
+	// this is for 2nd row's li offset from top. It means how much offset you want to give them with animation
+	var single_li_offset 	= 100;
+	var current_opened_box  = -1;
+	
+	$('#wrap li').click(function() {
+	
+		var thisID = $(this).attr('id');
+		var $this  = $(this);
+		
+		var id = $('#wrap li').index($this);
+		
+		if(current_opened_box == id) // if user click a opened box li again you close the box and return back
+		{
+			$('#wrap .detail-view').slideUp('slow');
+			return false;
+		}
+		$('#cart_wrapper').slideUp('slow');
+		$('#wrap .detail-view').slideUp('slow');
+		
+		// save this id. so if user click a opened box li again you close the box.
+		current_opened_box = id;
+		
+		var targetOffset = 0;
+		
+		// below conditions assumes that there are four li in one row and total rows are 4. How ever if you want to increase the rows you have to increase else-if conditions and if you want to increase li in one row, then you have to increment all value below. (if(id<=3)), if(id<=7) etc
+		
+		if(id<=3)
+			targetOffset = 0;
+		else if(id<=7)
+			targetOffset = single_li_offset;
+		else if(id<=11)
+			targetOffset = single_li_offset*2;
+		else if(id<=15)
+			targetOffset = single_li_offset*3;
+		
+		$("html:not(:animated),body:not(:animated)").animate({scrollDown: targetOffset}, 800,function(){
+			
+			$('#wrap #detail-'+thisID).slideDown(800);
+			return false;
+		});
+		
+	});
+	
+	$('.close a').click(function() {
+		
+		$('#wrap .detail-view').slideUp('slow');
+		
+	});
+	
+	$('.closeCart').click(function() {
+		
+		$('#cart_wrapper').slideUp();
+		
+	});
+	
+	$('#show_cart').click(function() {
+		
+		$('#cart_wrapper').slideToggle('slow');
+		
+	});
+	
+});
+
+function include(arr, obj) {
+  for(var i=0; i<arr.length; i++) {
+    if (arr[i] == obj) return true;
+  }
+}
+
+function getpos(arr, obj) {
+  for(var i=0; i<arr.length; i++) {
+    if (arr[i] == obj) return i;
+  }
+}
+
+</script>
+<!--[if lt IE 9]>
+<script type="text/javascript" src="js/html5.js"></script>
+<link rel="stylesheet" href="css/ie.css" type="text/css" media="screen">
+<![endif]-->
+</head>
+<body id="page3">
+<div class="main-bg">
+  <div class="bg">
+    <!--==============================header=================================-->
+    <header>
+      <div class="main">
+        <div class="wrapper">
+          <h1><a href="index.html"><font color="#FFFFFF">Rudra Chem</font></a></h1>
+          <div class="fright">
+            <div class="indent"> <span class="address"></span> <span class="Phoneone">Contact No: 09422747632<br>
+                        </span> </div>
+          </div>
+        </div>
+        <nav>
+          <ul class="menu">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a class="active" href="product.html">Products</a></li>
+            <li><a href="features.html">Features</a></li>
+
+            <li><a href="locations.html">Contact Us</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <!--==============================content================================-->
+    <section id="content">
+      <div class="main">
+        <div class="container_12">
+          
+          <div class="container-bot">
+            <div class="container-top">
+              <div class="container">
+                <div id="wrap" align="center" class="product">
+    
+		<ul>
+			<li id="1">
+			<img src="imgs/as1.png" class="" height="150" alt="" />
+				
+				<br clear="all" />
+				<div>Acetic Acid -98%</div>
+			</li>
+			
+			<li id="2">
+			<img src="imgs/acetone.png"  height="150" alt="" />
+				
+				<br clear="all" />
+				<div>Acetone</div>
+			</li>
+			
+			<li id="3">
+				<img src="imgs/acri.png"  height="150" alt="" />
+				
+				<br clear="all" />
+				<div>Acrylic Acid</div>
+			</li>
+			<li id="4">
+				<img src="imgs/ben.png"  height="150" alt="" />
+				
+				<br clear="all" />
+				<div>Benzene</div>
+			</li>
+			
+			<!-- Detail Boxes for above four li -->
+			
+			<div class="detail-view" id="detail-1">
+			
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/as1.png" class="detail_images" class="pro" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">Acetic acid</font></label>					
+					
+					<p>Acetic acid is an organic compound with the chemical formula CH3COOH. It is a colourless liquid that when undiluted is also called glacial acetic acid. Acetic acid is the main component of vinegar, and has a distinctive sour taste and pungent smell.<br>
+Formula: C2H4O2<br>
+IUPAC ID: Acetic acid<br>
+Molar mass: 60.05 g/mol<br>
+Density: 1.05 g/cm³<br>
+Boiling point: 118 °C<br>
+Melting point: 16 °C<br>
+
+
+					</p>
+					
+					<br clear="all" />
+					
+				</div>
+				
+				
+			</div>
+			<div class="detail-view" id="detail-2">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/acetone.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">Acetone</font></label>
+					
+					
+					<p>
+						Acetone (systematically named propanone) is the organic compound with the formula (CH3)2CO. It is a colorless, mobile, flammable liquid, and is the simplest ketone. <br>
+Formula: C3H6O<br>
+Density: 791.00 kg/m³<br>
+Boiling point: 56 °C<br>
+Molar mass: 58.08 g/mol<br>
+Melting point: -95 °C<br>
+Classification: Ketone<br>
+
+
+					
+						<br clear="all" /><br clear="all" />
+						
+						
+					</p>
+					
+					<br clear="all" />
+					
+									
+				</div>
+				
+			</div>
+			<div class="detail-view" id="detail-3">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/acri.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">Acrylic acid</font></label>
+					
+					
+
+					<p>
+						Acrylic acid is an organic compound with the formula CH2=CHCO2H. It is the simplest unsaturated carboxylic acid, consisting of a vinyl group connected directly to a carboxylic acid terminus. <br>
+Boiling point: 141 °C<br>
+Density: 1.05 g/cm³<br>
+
+
+						<br clear="all" /><br clear="all" />
+						
+						
+					</p>
+					
+					<br clear="all" />
+					
+					
+					
+				</div>
+				
+			</div>
+			<div class="detail-view" id="detail-4">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/ben.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">Benzene</font></label>
+					
+					
+					<p>
+						Benzene is an organic chemical compound with the molecular formula C6H6. Its molecule is composed of 6 carbon atoms joined in a ring, with 1 hydrogen atom attached to each carbon atom.<br>
+Formula: C6H6<br>
+Density: 876.50 kg/m³<br>
+Molar mass: 78.11 g/mol<br>
+Boiling point: 80.1 °C<br>
+Melting point: 5.5 °C<br>
+Soluble in: Water<br>
+
+
+					
+						<br clear="all" /><br clear="all" />
+						
+						
+					</p>
+					
+					<br clear="all" />
+					
+					
+					
+				</div>
+				
+			</div>
+			
+			<!---->
+			
+			<li id="5">
+				<img src="imgs/bis.png" class="" height="150" alt="" />
+				
+				<br clear="all" />
+				<div>Bisphenol</div>
+			</li>
+			
+
+			<li id="6">
+				<img src="imgs/b.png" class="" height="150" alt="" />
+				
+				<br clear="all" />
+				<div>Boric Acid</div>
+			</li>
+			
+			<li id="7">
+				<img src="imgs/n-b.png" class="" height="150" alt="" />
+				
+				<br clear="all" />
+				<div>Butyl Acetate</div>
+			</li>
+			<li id="8">
+				<img src="imgs/mono.png" class="" height="150" alt="" />
+				
+				<br clear="all" />
+				<div>Butyl Acrylate Monomer</div>
+			</li>
+			
+			<!-- Detail Boxes for above four li -->
+			
+			<div class="detail-view" id="detail-5">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/bis.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">Bisphenol</font></label>
+					
+					
+					<p>
+						Bisphenol  is a man-made carbon-based synthetic compound with the chemical formula (CH3)2C(C6H4OH)2 belonging to the group of diphenylmethane derivatives and bisphenols.<br>
+Formula: C15H16O2<br>
+IUPAC ID: 4,4'-(propane-2,2-diyl)diphenol<br>
+Melting point: 158 °C<br>
+Molar mass: 228.29 g/mol<br>
+Density: 1.20 g/cm<br>³
+Soluble in: Water<br>
+
+
+						<br clear="all" /><br clear="all" />
+						
+						
+					</p>
+					
+					<br clear="all" />
+					
+					
+					
+				</div>
+				
+			</div>
+			<div class="detail-view" id="detail-6">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/b.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">Boric acid</font></label>
+					
+					
+					<p align="justify">Boric acid, also called hydrogen borate, boracic acid, orthoboric acid and acidum boricum, is a weak acid of boron often used as an antiseptic, insecticide, flame retardant, neutron absorber, or precursor to other chemical compounds.<br>
+Formula: H3BO3<br>
+Molar mass: 61.83 g/mol<br>
+Melting point: 170.9 °C<br>
+Density: 1.44 g/cm³<br>
+Soluble in: Water<br>
+IUPAC ID: Boric acid, Trihydroxidoboron
+					<br>
+						<br clear="all" /><br clear="all" />
+						
+					</p>
+					
+					<br clear="all" />
+					
+					
+				</div>
+				
+			</div>
+			<div class="detail-view" id="detail-7">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/n-b.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">N-Butyl</font></label>
+					
+					
+					<p>
+						n-Butyl acetate, also known as butyl ethanoate, is an organic compound commonly used as a solvent in the production of lacquers and other products. It is a colorless flammable liquid.<br>
+Formula: C6H12O2<br>
+Boiling point: 126 °C<br>
+Molar mass: 116.16 g/mol<br>
+Density: 880.00 kg/m³<br>
+Melting point: -74 °C<br>
+
+
+					
+						<br clear="all" /><br clear="all" />
+						
+					</p>
+					
+					<br clear="all" />
+					
+					
+				</div>
+				
+			</div>
+			<div class="detail-view" id="detail-8">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/mono.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">Butyl Acrylate</font> </label>
+					
+					
+					<p align="justify">
+						•	Butyl Acrylate is used in dispersion of paints, inks, adhesives and paint Formulations
+•	Butyl Acrylate is also used in cleaning products, anti oxidant agents, amphoteric surfactants.<br>
+Appearance	Clear liquid<br>
+Molecular Weight	 128.17g/mole<br>
+Color	Clear Colorless<br>
+Boiling Point	147.4°C<br>
+Critical Temperature	324.7°C<br>
+Flash point	 39°C<br>
+
+
+
+</p>
+                        
+					
+					<br clear="all" />
+					
+					
+					
+				</div>
+				
+			</div>
+			
+			<!---->
+			
+			<li id="9">
+				<img src="imgs/cel.png" class="" height="150" alt="" />
+				
+				<br clear="all" />
+				<div><span class="name">Butyl Cellosolve</span><span class="price"></span></div>
+			</li>
+			
+			<li id="10">
+				<img src="imgs/cal.png" class="" height="150" alt="" />
+				
+				<br clear="all" />
+				<div><span class="name">Caustic Soda Folkes </span> </div>
+			</li>
+			
+			<li id="11">
+				<img src="imgs/clo.png" class="" height="150" alt="" />
+				
+				<br clear="all" />
+				<div>Calcium Chloride</div>
+			</li>
+			
+			<li id="12">
+				<img src="imgs/soda.png" class="" height="150" alt="" />
+				
+				<br clear="all" />
+				<div><span class="name">Calcium Carbonate</span></div>
+			</li>
+			
+			<!-- Detail Boxes for above four li -->
+			
+			<div class="detail-view" id="detail-9">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/cel.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">Butyl Glycol </font></label>
+					
+					<p>
+						Butyl Glycol (2-Butoxy Ethanol) is employed primarily in the production of lacquers based on nitrocellulose, cellulose ethers and chlorinated rubber. Small quantities are also used combination lacquers.<br>
+ Chemical Formula	C6H14O2<br>
+Appearance	Clear, bright and free from solid matter<br>
+Specific Gravity 20/20 ºC	0.900 - 0.904<br>
+Initial Boiling Point-167.0 ºC Min<br>
+Dry Point-173.0ºC Max.<br>
+Flash Point (ºC)	61ºC Min<br>
+Molecular Weight	118.11<br>
+Solubility In water	Soluble<br>
+   
+
+					
+						<br clear="all" /><br clear="all" />
+						
+					</p>
+					
+					<br clear="all" />
+					
+					
+					
+				</div>
+				
+			</div>
+			<div class="detail-view" id="detail-10">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/cal.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">Calcium carbonate</font> </label>
+					
+					<p>
+						Calcium carbonate is a chemical compound with the formula CaCO3. It is a common substance found in rocks in all parts of the world, and is the main component of shells of marine organisms, snails, coal balls, pearls, and eggshells.<br>
+Formula: CaCO3<br>
+Molar mass: 100.0869 g/mol<br>
+Density: 2.71 g/cm³<br>
+IUPAC ID: Calcium carbonate<br>
+Melting point: 825 °C<br>
+
+
+
+					
+						<br clear="all" /><br clear="all" />
+						
+					</p>
+					
+					<br clear="all" />
+					
+					
+					
+				</div>
+				
+			</div>
+			<div class="detail-view" id="detail-11">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/clo.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">Calcium chloride</font></label>
+					
+					<p>
+						Calcium chloride, CaCl2, is a salt of calcium and chloride. It behaves as a typical ionic halide, and is solid at room temperature. Common applications include brine for refrigeration plants, ice and dust control on roads, and desiccation.<br>
+Molar mass: 110.98 g/mol<br>
+Formula: CaCl2<br>
+Melting point: 772 °C<br>
+Density: 2.15 g/cm³<br>
+Boiling point: 1,935 °C<br>
+Soluble in: Water, Acetone, Acetic acid<br>
+
+
+
+					<br clear="all" /><br clear="all" />
+					</p>
+					
+					<br clear="all" />
+					
+					
+					
+				</div>
+				
+			</div>
+			<div class="detail-view" id="detail-12">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/soda.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">caustic soda </font></label>
+					
+					<p>Sodium hydroxide, also known as lye or caustic soda, has the molecular formula NaOH and is a highly caustic metallic base and alkali salt. It is a white solid available in pellets, flakes, granules, and as a 50% saturated solution. <br>
+Formula: NaOH<br>
+Molar mass: 39.997 g/mol<br>
+Density: 2.13 g/cm³<br>
+IUPAC ID: Sodium hydroxide<br>
+Melting point: 318 °C<br>
+Soluble in: Water, Methanol, Ethanol<br>
+
+
+					
+						<br clear="all" /><br clear="all" />
+						
+						
+					</p>
+					
+					<br clear="all" />
+					
+					
+					
+				</div>
+				
+			</div>
+			
+			<!---->
+			
+			
+			
+			
+			<!-- Detail Boxes for above four li -->
+			<li id="13">
+			<img src="imgs/cloro.png" class="" height="150" alt="" />
+				
+				<br clear="all" />
+				<div>Chloroforrn</div>
+			</li>
+					
+			<li id="14">
+			<img src="imgs/citric.png"  height="150" alt="" />
+				
+				<br clear="all" />
+				<div>Citric Acid</div>
+			</li>
+			
+			<li id="15">
+				<img src="imgs/cut.png"  height="150" alt="" />
+				
+				<br clear="all" />
+				<div>Cutting Fluid</div>
+			</li>
+			<li id="16">
+				<img src="imgs/cyclo.png"  height="150" alt="" />
+				
+				<br clear="all" />
+				<div>Cyclohexane</div>
+			</li>
+			
+			<!-- Detail Boxes for above four li -->
+			
+			<div class="detail-view" id="detail-13">
+			
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/cloro.png" class="detail_images" class="pro" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">Chloroform</font></label>
+					
+					
+					<p> Chloroform is an organic compound with formula CHCl3. It is one of the four chloromethanes. The colorless, sweet-smelling, dense liquid is a trihalomethane, and is considered somewhat hazardous. <br>
+Formula: CHCl3<br>
+Density: 1.48 g/cm³<br>
+Boiling point: 61.2 °C<br>
+IUPAC ID: Chloroform<br>
+Melting point: -63.5 °C<br>
+Molar mass: 119.38 g/mol<br>
+
+
+					</p>
+					
+					<br clear="all" />
+					
+				</div>
+				
+				
+			</div>
+			<div class="detail-view" id="detail-14">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/citric.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">Citric acid</font></label>
+					
+					
+					<p>
+						Citric acid is a weak organic acid with the formula C6H8O7. It is a natural preservative/conservative and is also used to add an acidic or sour taste to foods and soft drinks. <br>
+Formula: C6H8O7<br>
+Molar mass: 192.124 g/mol<br>
+Melting point: 153 °C<br>
+Density: 1.66 g/cm³<br>
+Boiling point: 175 °C<br>
+Soluble in: Water<br>
+
+
+					
+						<br clear="all" /><br clear="all" />
+						
+						
+					</p>
+					
+					<br clear="all" />
+					
+									
+				</div>
+				
+			</div>
+			<div class="detail-view" id="detail-15">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/cut.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">Cutting fluid</font></label>
+					
+					
+
+					<p>
+						Cutting fluid is a type of coolant and lubricant designed specifically for metalworking and machining processes. There are various kinds of cutting fluids, which include oils, oil-water emulsions,<br> pastes, gels, aerosols (mists), and air or other gases.<br> 
+						<br clear="all" /><br clear="all" />
+						
+						
+					</p>
+					
+					<br clear="all" />
+					
+					
+					
+				</div>
+				
+			</div>
+			<div class="detail-view" id="detail-16">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/cyclo.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">Cyclohexane</font></label>
+					
+					
+					<p>
+						Cyclohexane is a cycloalkane with the molecular formula C6H12. Cyclohexane is used as a nonpolar solvent for the chemical industry, and also as a raw material for the industrial production of adipic ... <br>
+Boiling point: 80.74 °C<br>
+Formula: C6H12<br>
+Density: 779.00 kg/m³<br>
+Molar mass: 84.16 g/mol<br>
+
+
+					
+						<br clear="all" /><br clear="all" />
+						
+						
+					</p>
+					
+					<br clear="all" />
+					
+					
+					
+				</div>
+				
+			</div>
+			
+			<!---->
+			
+			<li id="17">
+				<img src="imgs/DEG.png" class="" height="150" alt="" />
+				
+				<br clear="all" />
+				<div>D.E.G.</div>
+			</li>
+			
+
+			<li id="18">
+				<img src="imgs/dbp.png" class="" height="150" alt="" />
+				
+				<br clear="all" />
+				<div>D.B.P.</div>
+			</li>
+			
+			<li id="19">
+				<img src="imgs/hy.png" class="" height="150" alt="" />
+				
+				<br clear="all" />
+				<div>Hydraulic Oil </div>
+			</li>
+			<li id="20">
+				<img src="imgs/dc.png" class="" height="150" alt="" />
+				
+				<br clear="all" />
+				<div> Diacetone </div>
+			</li>
+			
+			<!-- Detail Boxes for above four li -->
+			
+			<div class="detail-view" id="detail-17">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/DEG.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">D.E.G</font></label>
+					
+					
+					<p>
+						Diethylene glycol is an organic compound with the formula (HOCH2CH2)2O. It is a colorless, practically odorless, poisonous, and hygroscopic liquid with a sweetish taste. It is miscible in water, alcohol, ether, acetone, and ethylene glycol. <br>
+Formula: C4H10O3<br>
+Density: 1.12 g/cm³<br>
+Molar mass: 106.12 g/mol<br>
+					
+						<br clear="all" /><br clear="all" />
+						
+						
+					</p>
+					
+					<br clear="all" />
+					
+					
+					
+				</div>
+				
+			</div>
+			<div class="detail-view" id="detail-18">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/dbp.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">D.B.P</font></label>
+					
+					
+					<p align="justify">Dibutyl phthalate is a commonly used plasticizer. It is also used as an additive to adhesives or printing inks. It is soluble in various organic solvents, e.g. in alcohol, ether and benzene. DBP is also used as an ectoparasiticide. <br>
+IUPAC ID: Dibutyl phthalate<br>
+Formula: C16H22O4<br>
+Density: 1.05 g/cm³<br>
+Molar mass: 278.34 g/mol<br>
+Boiling point: 340 °C<br>
+Soluble in: Water, Alcohol, Ether<br>
+
+
+					
+						<br clear="all" /><br clear="all" />
+						
+					</p>
+					
+					<br clear="all" />
+					
+					
+				</div>
+				
+			</div>
+			<div class="detail-view" id="detail-19">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/hy.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">Hydraulic Oil</font></label>
+					
+					
+					<p>
+						 The primary function of a hydraulic fluid is to convey power. In use, however, there are other important functions of hydraulic fluid such as protection of the hydraulic machine components.<br> The table below lists the major functions of a hydraulic fluid and the properties of a fluid that affect its ability to perform that function<br>
+					
+						<br clear="all" /><br clear="all" />
+						
+					</p>
+					
+					<br clear="all" />
+					
+					
+				</div>
+				
+			</div>
+			<div class="detail-view" id="detail-20">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/dc.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">Diacetone<font></label>
+					
+					
+					<p align="justify">
+						Diacetone alcohol is a chemical compound with the formula CH3CCH2C(CH3)2. This liquid is a common synthetic intermediate used for the preparation of other compounds. It occurs naturally in Sleepy grass. <br>
+Formula: C6H12O2<br>
+Molar mass: 116.16 g/mol<br>
+Density: 938.00 kg/m³<br>
+
+
+</p>
+                        
+					
+					<br clear="all" />
+					
+					
+					
+				</div>
+				
+			</div>
+			
+			<!---->
+			
+			<li id="21">
+				<img src="imgs/epi.png" class="" height="150" alt="" />
+				
+				<br clear="all" />
+				<div><span class="name">Epichlorohydrin</span><span class="price"></span></div>
+			</li>
+			
+			<li id="22">
+				<img src="imgs/eth.png" class="" height="150" alt="" />
+				
+				<br clear="all" />
+				<div><span class="name">Ethyl Acetate</span> </div>
+			</li>
+			
+			<li id="23">
+				<img src="imgs/cello.png" class="" height="150" alt="" />
+				
+				<br clear="all" />
+				<div>	Ethyl Cellosolve</div>
+			</li>
+			
+			<li id="24">
+				<img src="imgs/f.png" class="" height="150" alt="" />
+				
+				<br clear="all" />
+				<div><span class="name">Formaldehyde-37%</span></div>
+			</li>
+			
+			<!-- Detail Boxes for above four li -->
+			
+			<div class="detail-view" id="detail-21">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/epi.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">Epichlorohydrin </font></label>
+					
+					<p>
+						Epichlorohydrin is an organochlorine compound and an epoxide. It is a colorless liquid with a pungent, garlic-like odor, moderately soluble in water, but miscible with most polar organic solvents. <br>
+Formula: C3H5ClO<br>
+Density: 1.18 g/cm³<br>
+Molar mass: 92.52 g/mol<br>
+Boiling point: 117.9 °C<br>
+Melting point: -25.6 °C	<br>				
+						<br clear="all" /><br clear="all" />
+						
+					</p>
+					
+					<br clear="all" />
+					
+					
+					
+				</div>
+				
+			</div>
+			<div class="detail-view" id="detail-22">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/eth.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">Ethyl acetate</font></label>
+					
+					<p>
+						Ethyl acetate is the organic compound with the formula CH3COOCH2CH3. This colorless liquid has a characteristic sweet smell and is used in glues, nail polish removers, decaffeinating tea and coffee, and cigarettes.<br>
+Formula: C4H8O2<br>
+Density: 897.00 kg/m³<br>
+Boiling point: 77.1 °C<br>
+IUPAC ID: Ethyl acetate<br>
+Molar mass: 88.105 g/mol<br>
+Soluble in: Water<br>
+
+
+					
+						<br clear="all" /><br clear="all" />
+						
+					</p>
+					
+					<br clear="all" />
+					
+					
+					
+				</div>
+				
+			</div>
+			<div class="detail-view" id="detail-23">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/cello.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">2-Ethoxyethanol</font></label>
+					
+					<p>
+						2-Ethoxyethanol, also known by the trademark Cellosolve or ethyl cellosolve, is a solvent used widely in commercial and industrial applications.<br>
+Density: 930.00 kg/m³<br>
+
+
+ 
+					<br clear="all" /><br clear="all" />
+					</p>
+					
+					<br clear="all" />
+					
+					
+					
+				</div>
+				
+			</div>
+			<div class="detail-view" id="detail-24">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/f.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">Formaldehyde </font></label>
+					
+					<p>
+						Formaldehyde is an organic compound with the formula CH2O or HCHO. It is the simplest aldehyde, hence its systematic name methanal. The common name of the substance comes from its similarity and relation to formic acid.<br>
+A gas at room temperature, formaldehyde is colorless and has a characteristic pungent, irritating odor.<br> It is an important precursor to many other materials and chemical compounds. In 2005, annual world production of formaldehyde was estimated to be 8.7 million tonnes<br>
+					
+						<br clear="all" /><br clear="all" />
+						
+						
+					</p>
+					
+					<br clear="all" />
+					
+					
+					
+				</div>
+				
+			</div>
+           
+            
+			<li id="25">
+			<img src="imgs/formic.png" class="" height="150" alt="" />
+				
+				<br clear="all" />
+				<div>Formic Acid</div>
+			</li>
+			
+			<li id="26">
+			<img src="imgs/gls.png"  height="150" alt="" />
+				
+				<br clear="all" />
+				<div>Glycerol </div>
+			</li>
+			
+			<li id="27">
+				<img src="imgs/hex.png"  height="150" alt="" />
+				
+				<br clear="all" />
+				<div>Hexane </div>
+			</li>
+			<li id="28">
+				<img src="imgs/per.png"  height="150" alt="" />
+				
+				<br clear="all" />
+				<div>Hydrogen peroxide </div>
+			</li>
+			
+			<!-- Detail Boxes for above four li -->
+			
+			<div class="detail-view" id="detail-25">
+			
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/formic.png" class="detail_images" class="pro" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">formic acid</font></label>					
+					
+					<p>
+formic acid - a colorless pungent fuming vesicatory liquid acid HCOOH found naturally in ants and many plants or made catalytically from carbon monoxide and steam; used in finishing textiles and paper and in the manufacture of insecticides and fumigants
+acid - any of various water-soluble compounds having a sour taste and capable of turning litmus red and reacting with a base to form a salt<br>
+•	Molecular Formula: CH2O2<br>
+•	Average mass: 46.025002 Da<br>
+•	Monoisotopic mass: 46.005001 Da<br>
+
+
+					</p>
+					
+					<br clear="all" />
+					
+				</div>
+				
+				
+			</div>
+			<div class="detail-view" id="detail-26">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/gls.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">Glycerol</font></label>
+					
+					
+					<p>
+						Glycerol is a simple polyol compound. It is a colorless, odorless, viscous liquid that is widely used in pharmaceutical formulations. Glycerol has three hydroxyl groups that are responsible for its solubility in water and its hygroscopic nature.<br>
+Formula: C3H8O3<br>
+Boiling point: 290 °C<br>
+Density: 1.26 g/cm³<br>
+Melting point: 17.8 °C<br>
+Molar mass: 92.09382 g/mol<br>
+Soluble in: Water<br>
+
+
+					
+						<br clear="all" /><br clear="all" />
+						
+						
+					</p>
+					
+					<br clear="all" />
+					
+									
+				</div>
+				
+			</div>
+			<div class="detail-view" id="detail-27">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/hex.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">Hexane</font></label>
+					
+					
+
+					<p>
+						Hexane is an alkane of six carbon atoms, with the chemical formula C6H14. The term may refer to any of the five structural isomers with that formula, or to a mixture of them. <br>
+Boiling point: 68 °C<br>
+Density: 654.80 kg/m³<br>
+
+
+
+
+						<br clear="all" /><br clear="all" />
+						
+						
+					</p>
+					
+					<br clear="all" />
+					
+					
+					
+				</div>
+				
+			</div>
+			<div class="detail-view" id="detail-28">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/per.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">Hydrogen peroxide</font></label>
+					
+					
+					<p>
+						Hydrogen peroxide is the simplest peroxide. It is also a strong oxidizer. Hydrogen peroxide is a clear liquid, slightly more viscous than water. In dilute solution, it appears colorless. <br>
+Formula: 2(HO)<br>
+Melting point: -0.43 °C<br>
+Density: 1.45 g/cm³<br>
+IUPAC ID: dihydrogen dioxide<br>
+Molar mass: 34.0147 g/mol<br>
+Boiling point: 150.2 °C<br>
+
+
+
+
+					
+						<br clear="all" /><br clear="all" />
+						
+						
+					</p>
+					
+					<br clear="all" />
+					
+					
+					
+				</div>
+				
+			</div>
+			
+			<!---->
+			
+			<li id="29">
+				<img src="imgs/mal.png" class="" height="150" alt="" />
+				
+				<br clear="all" />
+				<div>Maleic anhydride</div>
+			</li>
+			
+
+			<li id="30">
+				<img src="imgs/meg.png" class="" height="150" alt="" />
+				
+				<br clear="all" />
+				<div>MEG</div>
+			</li>
+			
+			<li id="31">
+				<img src="imgs/mk.png" class="" height="150" alt="" />
+				
+				<br clear="all" />
+				<div>MEK</div>
+			</li>
+			<li id="32">
+				<img src="imgs/mel.png" class="" height="150" alt="" />
+				
+				<br clear="all" />
+				<div>Melamine </div>
+			</li>
+			
+			<!-- Detail Boxes for above four li -->
+			
+			<div class="detail-view" id="detail-29">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/mal.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">Maleic anhydride</font></label>
+					
+					
+					<p>
+						Maleic anhydride is an organic compound with the formula C2H2(CO)2O. It is the acid anhydride of maleic acid and in its pure state it is a colourless or white solid with an acrid odour. Wikipedia
+Boiling point: 202 °C<br>
+Molar mass: 98.06 g/mol<br>
+Density: 1.48 g/cm³<br>
+Formula: C4H2O3<br>
+Melting point: 52.6 °C<br>
+
+
+
+
+						<br clear="all" /><br clear="all" />
+						
+						
+					</p>
+					
+					<br clear="all" />
+					
+					
+					
+				</div>
+				
+			</div>
+			<div class="detail-view" id="detail-30">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/meg.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">MEG</font></label>
+					
+					
+					<p align="justify">Ethylene glycol is an organic compound primarily used as a raw material in the manufacture of polyester fibers and fabric industry, and polyethylene terephthalate resins used in bottling.<br>
+Formula: C2H6O2<br>
+Melting point: -12.9 °C<br>
+Boiling point: 197.3 °C<br>
+Density: 1.11 g/cm³<br>
+Molar mass: 62.07 g/mol<br>
+IUPAC ID: Ethane-1,2-diol<br>
+
+
+					
+						<br clear="all" /><br clear="all" />
+						
+					</p>
+					
+					<br clear="all" />
+					
+					
+				</div>
+				
+			</div>
+			<div class="detail-view" id="detail-31">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/mk.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">MEK</font></label>
+					
+					
+					<p>Butanone, also known as methyl ethyl ketone or MEK, is an organic compound with the formula CH3CCH2CH3. This colorless liquid ketone has a sharp, sweet odor reminiscent of butterscotch and acetone.<br>
+Formula: C4H8O<br>
+Boiling point: 79.64 °C<br>
+Density: 805.00 kg/m³<br>
+Melting point: -86 °C<br>
+Molar mass: 72.11 g/mol<br>
+Soluble in: Water<br>
+
+
+
+
+					
+						<br clear="all" /><br clear="all" />
+						
+					</p>
+					
+					<br clear="all" />
+					
+					
+				</div>
+				
+			</div>
+			<div class="detail-view" id="detail-32">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/mel.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">Melamine </font> </label>
+					
+					
+					<p align="justify">
+						Melamine is an organic base and a trimer of cyanamide, with a 1,3,5-triazine skeleton. Like cyanamide, it contains 67% nitrogen by mass and, if mixed with resins, has fire retardant properties .<br>
+Formula: C3H6N6<br>
+Molar mass: 126.12 g/mol<br>
+Melting point: 345 °C<br>
+Density: 1.57 g/cm³<br>
+IUPAC ID: 1,3,5-Triazine-2,4,6-triamine<br>
+Soluble in: Water<br>
+
+
+
+
+
+</p>
+                        
+					
+					<br clear="all" />
+					
+					
+					
+				</div>
+				
+			</div>
+			
+			<!---->
+			
+			<li id="33">
+				<img src="imgs/methn.png" class="" height="150" alt="" />
+				
+				<br clear="all" />
+				<div><span class="name">Methanol</span><span class="price"></span></div>
+			</li>
+			
+			<li id="34">
+				<img src="imgs/mc.png" class="" height="150" alt="" />
+				
+				<br clear="all" />
+				<div><span class="name">Methylene chloride </span> </div>
+			</li>
+			
+			<li id="35">
+				<img src="imgs/but.png" class="" height="150" alt="" />
+				
+				<br clear="all" />
+				<div>n-Butanol</div>
+			</li>
+			
+			<li id="36">
+				<img src="imgs/nt.png" class="" height="150" alt="" />
+				
+				<br clear="all" />
+				<div><span class="name">Nitrobenzene</span></div>
+			</li>
+			
+			<!-- Detail Boxes for above four li -->
+			
+			<div class="detail-view" id="detail-33">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/methn.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">Methanol </font></label>
+					
+					<p>
+						Methanol, also known as methyl alcohol, wood alcohol, wood naphtha or wood spirits, is a chemical with the formula CH3OH.<br>
+Formula: CH4O<br>
+Density: 791.80 kg/m³<br>
+Boiling point: 64.7 °C<br>
+Vapor pressure: 13.02 kPa<br>
+Molar mass: 32.04 g/mol<br>
+Melting point: -97.6 °C<br>
+
+
+
+
+					
+						<br clear="all" /><br clear="all" />
+						
+					</p>
+					
+					<br clear="all" />
+					
+					
+					
+				</div>
+				
+			</div>
+			<div class="detail-view" id="detail-34">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/mc.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">methylene chloride</font> </label>
+					
+					<p>
+						Dichloromethane —or methylene chloride—is an organic compound with the formula CH2Cl2. This colorless, volatile liquid with a moderately sweet aroma is widely used as a solvent. <br>
+Density: 1.33 g/cm³<br>
+Formula: CH2Cl2<br>
+Boiling point: 39.6 °C<br>
+Molar mass: 84.93 g/mol<br>
+Melting point: -96.7 °C<br>
+IUPAC ID: Dichloromethane<br>
+
+
+
+					
+						<br clear="all" /><br clear="all" />
+						
+					</p>
+					
+					<br clear="all" />
+					
+					
+					
+				</div>
+				
+			</div>
+			<div class="detail-view" id="detail-35">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/but.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">n-Butanol</font></label>
+					
+					<p>n-Butanol or n-butyl alcohol or normal butanol is a primary alcohol with a 4-carbon structure and the molecular formula C4H9OH. Its isomers include isobutanol, 2-butanol, and tert-butanol. <br>
+Boiling point: 117.4 °C<br>
+Density: 810.00 kg/m³<br>
+
+
+
+
+
+					<br clear="all" /><br clear="all" />
+					</p>
+					
+					<br clear="all" />
+					
+					
+					
+				</div>
+				
+			</div>
+			<div class="detail-view" id="detail-36">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/nt.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+
+					
+					<label class='item_name'><font color="#FFFFFF">Nitrobenzene </font></label>
+					
+					<p>Nitrobenzene is an organic compound with the chemical formula C6H5NO2. It is a water-insoluble pale yellow oil with an almond-like odor. It freezes to give greenish-yellow crystals. <br>
+Formula: C6H5NO2<br>
+Melting point: 5.7 °C<br>
+Density: 1.20 g/cm³<br>
+Molar mass: 123.06 g/mol<br>
+Boiling point: 210.9 °C<br>
+
+
+
+
+					
+						<br clear="all" /><br clear="all" />
+						
+						
+					</p>
+					
+					<br clear="all" />
+					
+					
+					
+				</div>
+				
+			</div>
+			
+			<!---->
+			
+			
+			
+			
+			<!-- Detail Boxes for above four li -->
+			<li id="37">
+			<img src="imgs/oc.png" class="" height="150" alt="" />
+				
+				<br clear="all" />
+				<div>Octanol </div>
+			</li>
+					
+			<li id="38">
+			<img src="imgs/ot.png"  height="150" alt="" />
+				
+				<br clear="all" />
+				<div>Oxalic acid </div>
+			</li>
+			
+			<li id="39">
+				<img src="imgs/ph.png"  height="150" alt="" />
+				
+				<br clear="all" />
+				<div>Phenol</div>
+			</li>
+			<li id="40">
+				<img src="imgs/ps.png"  height="150" alt="" />
+				
+				<br clear="all" />
+				<div>Phosphoric acid</div>
+			</li>
+			
+			<!-- Detail Boxes for above four li -->
+			
+			<div class="detail-view" id="detail-37">
+			
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/oc.png" class="detail_images" class="pro" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">Octanol</font></label>
+				             <p>The term Octanol usually refers to the isomer, octan-1-ol, with the molecular formula CH3(CH2)7OH. It is a fatty alcohol.<br> 
+Many other isomers are also known. Esters of octanol, such as octyl acetate, occur as components of essential oils.<br>
+Density: 824.00 kg/m³<br></p>
+
+
+
+<br>
+
+
+
+					</p>
+					
+					<br clear="all" />
+					
+				</div>
+				
+				
+			</div>
+			<div class="detail-view" id="detail-38">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/ot.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">Oxalic acid</font></label>
+					
+					
+					<p>
+						Oxalic acid is an organic compound with the formula H2C2O4. It is a colorless crystalline solid that dissolves in water to give colorless solutions. It is classified as a dicarboxylic acid.<br> 
+Density: 1.90 g/cm³
+
+
+
+
+					
+						<br clear="all" /><br clear="all" />
+						
+						
+					</p>
+					
+					<br clear="all" />
+					
+									
+				</div>
+				
+			</div>
+			<div class="detail-view" id="detail-39">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/ph.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">Phenol</font></label>
+					
+					
+
+					<p>
+						
+Phenol also known as carbolic acid is an aromatic organic compound with the formula C6H5OH. It is a white crystalline solid that is volatile. The molecule consists of a phenyl group bonded to a hydroxyl group. <br>
+Formula: C6H6O<br>
+IUPAC ID: Phenol<br>
+Molar mass: 94.11124 g/mol<br>
+Melting point: 40.5 °C<br>
+Boiling point: 181.7 °C<br>
+Soluble in: Water<br>
+
+
+						<br clear="all" /><br clear="all" />
+						
+						
+					</p>
+					
+					<br clear="all" />
+					
+					
+					
+				</div>
+				
+			</div>
+			<div class="detail-view" id="detail-40">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/ps.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">Phosphoric acid</font></label>
+					
+					
+					<p>
+						Phosphoric acid is deliberately added to soft drinks to give them a sharper flavor. It also slows the growth of molds and bacteria, which would otherwise multiply rapidly in the sugary solution.<br>
+C.A.S. number 7664-38-20<br> 
+Chemical formula H3PO4<br>
+Formula weight 98.00 <br>
+Assay Not less than 75%, and not less than the minimum or within the range of 
+percent claimed by the vendor
+
+
+
+					
+						<br clear="all" /><br clear="all" />
+						
+						
+					</p>
+					
+					<br clear="all" />
+					
+					
+					
+				</div>
+				
+			</div>
+			
+			<!---->
+			
+			<li id="41">
+				<img src="imgs/pth.png" class="" height="150" alt="" />
+				
+				<br clear="all" />
+				<div>Phthalic anhydride </div>
+			</li>
+			
+
+			<li id="42">
+				<img src="imgs/prop.png" class="" height="150" alt="" />
+				
+				<br clear="all" />
+				<div>Propylene glycol</div>
+			</li>
+			
+			<li id="43">
+				<img src="imgs/sulf.png" class="" height="150" alt="" />
+				
+				<br clear="all" />
+				<div>Sodium sulfate </div>
+			</li>
+			<li id="44">
+				<img src="imgs/thn.png" class="" height="150" alt="" />
+				
+				<br clear="all" />
+				<div> GP Thinner </div>
+			</li>
+			
+			<!-- Detail Boxes for above four li -->
+			
+			<div class="detail-view" id="detail-41">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/pth.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">Phthalic anhydride</font></label>
+					
+					
+					<p>
+						Phthalic anhydride is the organic compound with the formula C6H4(CO)2O. It is the anhydride of phthalic acid. This colourless solid is an important industrial chemical, especially for the large-scale production of plasticizers for plastics.<br>
+Formula: C6H4(CO)2O<br>
+Melting point: 131 °C<br>
+Molar mass: 148.1 g/mol<br>
+Density: 1.53 g/cm³<br>
+Boiling point: 295 °C<br>
+
+
+					
+						<br clear="all" /><br clear="all" />
+						
+						
+					</p>
+					
+					<br clear="all" />
+					
+					
+					
+				</div>
+				
+			</div>
+			<div class="detail-view" id="detail-42">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/prop.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">Propylene glycol</font></label>
+					
+					
+					<p align="justify">Propylene glycol, also called 1,2-propanediol or propane-1,2-diol, is an organic compound with formula C3H8O2.<br>
+Melting point: -59 °C<br>
+Formula: C3H8O2<br>
+Boiling point: 188.2 °C<br>
+Density: 1.04 g/cm³<br>
+Molar mass: 76.09 g/mol<br>
+IUPAC ID: propane-1,2-diol<br>
+
+
+
+					
+						<br clear="all" /><br clear="all" />
+						
+					</p>
+					
+					<br clear="all" />
+					
+					
+				</div>
+				
+			</div>
+			<div class="detail-view" id="detail-43">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/sulf.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">Sodium sulfate</font></label>
+					
+					
+					<p>
+						 Sodium sulfate is the sodium salt of sulfuric acid. When anhydrous, it is a white crystalline solid of formula Na2SO4 known as the mineral thenardite; the decahydrate Na2SO4•10H2O is found naturally ..<br>
+Formula: Na2SO4<br>
+Molar mass: 142.04 g/mol<br>
+Density: 2.66 g/cm³<br>
+Melting point: 884 °C<br>
+Boiling point: 1,429 °C<br>
+Soluble in: Water<br>
+
+
+					
+						<br clear="all" /><br clear="all" />
+						
+					</p>
+					
+					<br clear="all" />
+					
+					
+				</div>
+				
+			</div>
+			<div class="detail-view" id="detail-44">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/thn.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">GP Thinner<font></label>
+					
+					
+					<p align="justify">
+						GP Thinner is a low cost blend for acrylic and nitrocellulose lacquers, some enamels and 
+cleaning and for thinning Flexiprime, FM1 Auto Primer and Grille Black.<br>
+Product Type: Clear Liquid <br>
+Density: 0.830 kg/L <br>
+Recommended DFT:  25-35 microns DFT /coat <br>
+Theoretical Coverage:8m²/L @ 40 Microns DFT.<br>
+Properties VOC: 742 g/L<br> 
+Boiling point: 50°C <br>
+
+
+
+</p>
+                        
+					
+					<br clear="all" />
+					
+					
+					
+				</div>
+				
+			</div>
+			
+			<!---->
+			
+			<li id="45">
+				<img src="imgs/tit.png" class="" height="150" alt="" />
+				
+				<br clear="all" />
+				<div><span class="name">Titanium dioxide</span><span class="price"></span></div>
+			</li>
+			
+			<li id="46">
+				<img src="imgs/tri.png" class="" height="150" alt="" />
+				
+				<br clear="all" />
+				<div><span class="name">Trichloroethylene</span> </div>
+			</li>
+			
+			<li id="47">
+				<img src="imgs/zink.png" class="" height="150" alt="" />
+				
+				<br clear="all" />
+				<div>Zinc oxide </div>
+			</li>
+			
+			<li id="48">
+				<img src="imgs/pr.png" class="" height="150" alt="" />
+				
+				<br clear="all" />
+				<div><span class="name">Paraffin wax</span></div>
+			</li>
+			
+			<!-- Detail Boxes for above four li -->
+			
+			<div class="detail-view" id="detail-45">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/tit.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">Titanium dioxide </font></label>
+					
+					<p>
+						Titanium dioxide, also known as titanium oxide or titania, is the naturally occurring oxide of titanium, chemical formula TiO 2. When used as a pigment, it is called titanium white, Pigment White 6, or CI 77891.<br>
+Formula: TiO2<br>
+Molar mass: 79.866 g/mol<br>
+Density: 4.23 g/cm³<br>
+Melting point: 1,843 °C<br>
+Boiling point: 2,972 °C<br>
+IUPAC ID: Titanium dioxide, Titanium(IV) oxide<br>
+
+				
+						<br clear="all" /><br clear="all" />
+						
+					</p>
+					
+					<br clear="all" />
+					
+					
+					
+				</div>
+				
+			</div>
+			<div class="detail-view" id="detail-46">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/tri.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">Trichloroethylene </font></label>
+					
+					<p>
+						The chemical compound trichloroethylene is a chlorinated hydrocarbon commonly used as an industrial solvent. It is a clear non-flammable liquid with a sweet smell.<br>
+Molar mass: 131.4 g/mol<br>
+Density: 1.46 g/cm³<br>
+Formula: C2HCl3<br>
+Boiling point: 87.2 °C<br>
+IUPAC ID: Trichloroethene<br>
+Soluble in: Water<br>
+
+
+
+
+					
+						<br clear="all" /><br clear="all" />
+						
+					</p>
+					
+					<br clear="all" />
+					
+					
+					
+				</div>
+				
+			</div>
+			<div class="detail-view" id="detail-47">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/zink.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">	Zinc oxide</font></label>
+					
+					<p>
+						Zinc oxide is an inorganic compound with the formula ZnO. ZnO is a white powder that is insoluble in water, which is widely used as an additive in numerous materials and products including plastics.<br>
+Formula: ZnO<br>
+Melting point: 1,975 °C<br>
+Molar mass: 81.408 g/mol<br>
+Density: 5.61 g/cm³<br>
+Boiling point: 2,360 °C<br>
+
+
+
+ 
+					<br clear="all" /><br clear="all" />
+					</p>
+					
+					<br clear="all" />
+					
+					
+					
+				</div>
+				
+			</div>
+			<div class="detail-view" id="detail-48">
+				
+				<div class="close" align="right">
+					<a href="javascript:void(0)">x</a>
+					
+				</div>
+				
+				<img src="imgs/pr.png" class="detail_images" width="340" height="310" alt="" />
+				
+				<div class="detail_info">
+					
+					<label class='item_name'><font color="#FFFFFF">Paraffin wax </font></label>
+					
+					<p>
+						Paraffin wax is a white or colourless soft solid that is used as a lubricant and for other applications<br>
+ It is derived from petroleum and consists of a mixture of hydrocarbon molecules containing between twenty and forty carbon atoms<br>
+. It is solid at room temperature and begins to melt above approximately 37 °C (99 °F)<br>
+its boiling point is >370 deg C.<br>
+
+						<br clear="all" /><br clear="all" />
+						
+						
+					</p>
+					
+					<br clear="all" />
+					
+					
+					
+				</div>
+				
+			</div>
+		
+			
+		</ul>
+		<br clear="all" />
+	</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!--==============================footer=================================-->
+    <footer>
+      <div class="main"> <span>Copyright &copy; <a href="#"> 2013 Rudra chemicals.</a> All Rights Reserved</span> Design by <a target="_blank" href="http://www.wavetechline.com/">Wave TechLine.com</a> </div>
+    </footer>
+  </div>
+</div>
+<script type="text/javascript">Cufon.now();</script>
+</body>
+</html>
